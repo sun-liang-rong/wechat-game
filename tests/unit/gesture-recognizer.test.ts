@@ -3,6 +3,25 @@ import { describe, expect, it } from 'vitest';
 import { GestureRecognizer } from '../../src/game/input/GestureRecognizer';
 
 describe('GestureRecognizer', () => {
+  it('throws a clear error when ending without a start', () => {
+    const recognizer = new GestureRecognizer();
+
+    expect(() => recognizer.end({ x: 10, y: 10 }, 100)).toThrow(
+      new Error('No active gesture'),
+    );
+  });
+
+  it('throws a clear error when ending after cancellation', () => {
+    const recognizer = new GestureRecognizer();
+
+    recognizer.start({ x: 0, y: 0 }, 0);
+    recognizer.cancel();
+
+    expect(() => recognizer.end({ x: 10, y: 10 }, 100)).toThrow(
+      new Error('No active gesture'),
+    );
+  });
+
   it('recognizes a short movement as a tap', () => {
     const recognizer = new GestureRecognizer();
 
