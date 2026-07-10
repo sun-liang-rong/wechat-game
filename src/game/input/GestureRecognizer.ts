@@ -4,22 +4,22 @@ export class GestureRecognizer {
   private points: Point[] = [];
   private startedAt = 0;
 
-  start(x: number, y: number, startedAt: number): void {
-    this.points = [{ x, y }];
+  start(point: Point, startedAt: number): void {
+    this.points = [{ ...point }];
     this.startedAt = startedAt;
   }
 
-  move(x: number, y: number): void {
+  move(point: Point): void {
     if (this.points.length === 0) {
       return;
     }
 
-    this.points.push({ x, y });
+    this.points.push({ ...point });
   }
 
-  end(x: number, y: number, _endedAt: number): Gesture {
+  end(point: Point, _endedAt: number): Gesture {
     const start = this.points[0];
-    const end = { x, y };
+    const end = { ...point };
     this.points.push(end);
 
     const travel = this.points.slice(1).reduce((total, point, index) => {
